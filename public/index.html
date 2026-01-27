@@ -3,1317 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Broadcast Bot - Broadcast Massal Otomatis</title>
+    <meta name="description" content="WhatsApp Broadcast Bot - Sistem broadcast WhatsApp otomatis dengan pairing code verification">
+    <meta name="keywords" content="whatsapp, broadcast, bot, automation, messaging">
+    <title>WhatsApp Broadcast Bot</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header & Navigation */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            padding: 15px 0;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 700;
-            font-size: 24px;
-        }
-
-        .logo-icon {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--gray);
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary);
-        }
-
-        .nav-link.active {
-            color: var(--primary);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary);
-            border-radius: 1px;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-large {
-            padding: 15px 35px;
-            font-size: 18px;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 180px 0 100px;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            margin-bottom: 20px;
-            font-weight: 800;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 50px;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: white;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Features Section */
-        .section {
-            padding: 100px 0;
-            background: white;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 42px;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-
-        .section-title p {
-            font-size: 18px;
-            color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .feature-card {
-            background: var(--light);
-            border-radius: 15px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid var(--gray-light);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 25px;
-            color: white;
-            font-size: 32px;
-        }
-
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .feature-card p {
-            color: var(--gray);
-            line-height: 1.6;
-        }
-
-        /* How It Works */
-        .steps {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 250px;
-            max-width: 300px;
-            text-align: center;
-            position: relative;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0 auto 25px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step::after {
-            content: '';
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            width: 100%;
-            height: 2px;
-            background: var(--gray-light);
-            z-index: 1;
-        }
-
-        .step:last-child::after {
-            display: none;
-        }
-
-        .step h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-
-        .step p {
-            color: var(--gray);
-        }
-
-        /* Pricing Section */
-        .pricing {
-            background: var(--light);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .pricing-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .pricing-card.popular {
-            border-color: var(--primary);
-            position: relative;
-        }
-
-        .popular-badge {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .pricing-header {
-            margin-bottom: 30px;
-        }
-
-        .pricing-name {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .pricing-price {
-            font-size: 48px;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .pricing-period {
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-
-        .pricing-features li {
-            padding: 10px 0;
-            color: var(--gray);
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .pricing-features li:last-child {
-            border-bottom: none;
-        }
-
-        .pricing-features li i {
-            color: var(--success);
-            margin-right: 10px;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            background: white;
-        }
-
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .testimonial-card {
-            background: var(--light);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            margin: 20px;
-        }
-
-        .testimonial-text {
-            font-size: 18px;
-            font-style: italic;
-            color: var(--dark);
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .author-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .author-info h4 {
-            font-size: 18px;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-
-        .author-info p {
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        /* FAQ Section */
-        .faq {
-            background: var(--light);
-        }
-
-        .faq-grid {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .faq-item {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .faq-question {
-            padding: 25px;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--dark);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .faq-question:hover {
-            background: #f8f9fa;
-        }
-
-        .faq-answer {
-            padding: 0 25px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s, padding 0.3s;
-        }
-
-        .faq-item.active .faq-answer {
-            padding: 0 25px 25px;
-            max-height: 500px;
-        }
-
-        /* CTA Section */
-        .cta {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            text-align: center;
-            padding: 100px 0;
-        }
-
-        .cta h2 {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .cta p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--dark);
-            color: white;
-            padding: 80px 0 40px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 25px;
-            color: white;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 15px;
-        }
-
-        .footer-links a {
-            color: var(--gray-light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: background 0.3s;
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--dark);
-            cursor: pointer;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .hero h1 {
-                font-size: 48px;
-            }
-            
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero p {
-                font-size: 18px;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .section {
-                padding: 60px 0;
-            }
-            
-            .section-title h2 {
-                font-size: 32px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .hero-stats {
-                gap: 30px;
-            }
-        }
-
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fadeIn {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: white;
-            padding: 20px 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 10000;
-            transform: translateX(400px);
-            transition: transform 0.3s;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .notification-success {
-            background: #d4edda;
-            color: #155724;
-            border-left: 4px solid #28a745;
-        }
-
-        .notification-success .notification-icon {
-            background: #28a745;
-            color: white;
-        }
-
-        .notification-error {
-            background: #f8d7da;
-            color: #721c24;
-            border-left: 4px solid #dc3545;
-        }
-
-        .notification-error .notification-icon {
-            background: #dc3545;
-            color: white;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Navigation -->
+    <nav class="navbar">
         <div class="container nav-container">
             <a href="/" class="logo">
-                <div class="logo-icon">
-                    <i class="fab fa-whatsapp"></i>
-                </div>
+                <i class="fab fa-whatsapp"></i>
                 <span>WhatsBroadcast</span>
             </a>
             
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <div class="nav-menu">
+                <a href="#features">Fitur</a>
+                <a href="#how-it-works">Cara Kerja</a>
+                <a href="#pricing">Harga</a>
+                <a href="/login.html" class="btn btn-outline">Masuk</a>
+                <a href="/register.html" class="btn btn-primary">Daftar Gratis</a>
+            </div>
+            
+            <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
-            
-            <nav class="nav-links" id="navLinks">
-                <a href="#home" class="nav-link active">Home</a>
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#how-it-works" class="nav-link">How It Works</a>
-                <a href="#pricing" class="nav-link">Pricing</a>
-                <a href="#testimonials" class="nav-link">Testimonials</a>
-                <a href="#faq" class="nav-link">FAQ</a>
-            </nav>
-            
-            <div class="nav-buttons">
-                <a href="/login.html" class="btn btn-outline">Login</a>
-                <a href="/register.html" class="btn btn-primary">Get Started</a>
-            </div>
         </div>
-    </header>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content animate-fadeIn">
-                <h1>Broadcast WhatsApp Massal dengan Mudah</h1>
-                <p>Kirim pesan ke ribuan kontak sekaligus dengan sistem otomatis. Aman, cepat, dan efisien untuk bisnis Anda.</p>
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1>Broadcast WhatsApp <span class="highlight">Otomatis</span></h1>
+                <p class="subtitle">Kirim pesan ke ribuan kontak sekaligus dengan sistem yang aman dan terverifikasi. Hemat waktu, tingkatkan efektivitas.</p>
                 
-                <div class="hero-buttons">
-                    <a href="/register.html" class="btn btn-primary btn-large">
-                        <i class="fas fa-rocket"></i> Mulai Gratis
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3>10K+</h3>
+                        <p>Pengguna Aktif</p>
+                    </div>
+                    <div class="stat">
+                        <h3>5M+</h3>
+                        <p>Pesan Terkirim</p>
+                    </div>
+                    <div class="stat">
+                        <h3>99%</h3>
+                        <p>Success Rate</p>
+                    </div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="/register.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket"></i> Mulai Sekarang
                     </a>
-                    <a href="#features" class="btn btn-outline btn-large">
+                    <a href="#demo" class="btn btn-outline btn-lg">
                         <i class="fas fa-play-circle"></i> Lihat Demo
                     </a>
                 </div>
-                
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">10,000+</div>
-                        <div class="stat-label">Pengguna Aktif</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">5 Juta+</div>
-                        <div class="stat-label">Pesan Terkirim</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">99.8%</div>
-                        <div class="stat-label">Success Rate</div>
-                    </div>
-                </div>
+            </div>
+            
+            <div class="hero-image">
+                <img src="/images/hero-bg.jpg" alt="WhatsApp Broadcast Dashboard">
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="section" id="features">
+    <section id="features" class="features">
         <div class="container">
-            <div class="section-title">
+            <div class="section-header">
                 <h2>Fitur Unggulan</h2>
                 <p>Semua yang Anda butuhkan untuk broadcast WhatsApp yang efektif</p>
             </div>
             
             <div class="features-grid">
-                <div class="feature-card animate-fadeIn">
+                <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-qrcode"></i>
                     </div>
-                    <h3>Broadcast Massal</h3>
-                    <p>Kirim pesan ke ribuan kontak sekaligus dengan satu klik. Dukungan untuk teks, gambar, dan dokumen.</p>
+                    <h3>Pairing Aman</h3>
+                    <p>Sistem pairing code 6 digit untuk keamanan akun Anda</p>
                 </div>
                 
-                <div class="feature-card animate-fadeIn" style="animation-delay: 0.2s">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <h3>Broadcast Massal</h3>
+                    <p>Kirim ke ribuan kontak sekaligus dengan satu klik</p>
+                </div>
+                
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-clock"></i>
                     </div>
                     <h3>Penjadwalan</h3>
-                    <p>Atur jadwal broadcast untuk waktu tertentu. Kirim pesan otomatis saat waktu yang ditentukan tiba.</p>
+                    <p>Jadwalkan pengiriman pesan di waktu tertentu</p>
                 </div>
                 
-                <div class="feature-card animate-fadeIn" style="animation-delay: 0.4s">
+                <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-chart-bar"></i>
+                        <i class="fas fa-file-import"></i>
                     </div>
-                    <h3>Analytics Lengkap</h3>
-                    <p>Pantau performa broadcast dengan statistik real-time. Lihat berapa banyak pesan yang terkirim dan dibaca.</p>
+                    <h3>Import Kontak</h3>
+                    <p>Import kontak dari CSV/Excel dengan mudah</p>
                 </div>
                 
-                <div class="feature-card animate-fadeIn" style="animation-delay: 0.6s">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics</h3>
+                    <p>Pantau statistik pengiriman secara real-time</p>
+                </div>
+                
+                <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Keamanan Tingkat Tinggi</h3>
-                    <p>Sistem pairing code dan enkripsi data. Akun Anda terlindungi dengan sistem keamanan berlapis.</p>
-                </div>
-                
-                <div class="feature-card animate-fadeIn" style="animation-delay: 0.8s">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Manajemen Kontak</h3>
-                    <p>Kelompokkan kontak berdasarkan kategori. Import kontak dari CSV dengan mudah.</p>
-                </div>
-                
-                <div class="feature-card animate-fadeIn" style="animation-delay: 1s">
-                    <div class="feature-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <h3>Performance Optimal</h3>
-                    <p>Server yang cepat dan stabil. Kirim 1000 pesan hanya dalam beberapa menit.</p>
+                    <h3>Keamanan</h3>
+                    <p>Enkripsi data dan proteksi lengkap</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- How It Works -->
-    <section class="section" id="how-it-works" style="background: #f8f9fa;">
+    <section id="how-it-works" class="how-it-works">
         <div class="container">
-            <div class="section-title">
-                <h2>Cara Kerjanya</h2>
-                <p>Hanya perlu 4 langkah untuk mulai broadcast</p>
+            <div class="section-header">
+                <h2>Cara Kerja</h2>
+                <p>Hanya 4 langkah untuk mulai broadcast</p>
             </div>
             
             <div class="steps">
-                <div class="step animate-fadeIn">
+                <div class="step">
                     <div class="step-number">1</div>
                     <h3>Daftar Akun</h3>
-                    <p>Buat akun gratis dalam 30 detik. Tidak perlu kartu kredit.</p>
+                    <p>Buat akun gratis dalam 1 menit</p>
                 </div>
                 
-                <div class="step animate-fadeIn" style="animation-delay: 0.2s">
+                <div class="step">
                     <div class="step-number">2</div>
                     <h3>Pairing WhatsApp</h3>
-                    <p>Hubungkan WhatsApp Anda dengan sistem menggunakan pairing code.</p>
+                    <p>Scan QR code untuk menghubungkan WhatsApp</p>
                 </div>
                 
-                <div class="step animate-fadeIn" style="animation-delay: 0.4s">
+                <div class="step">
                     <div class="step-number">3</div>
                     <h3>Upload Kontak</h3>
-                    <p>Tambahkan kontak penerima atau import dari file CSV.</p>
+                    <p>Import atau tambah kontak penerima</p>
                 </div>
                 
-                <div class="step animate-fadeIn" style="animation-delay: 0.6s">
+                <div class="step">
                     <div class="step-number">4</div>
                     <h3>Kirim Broadcast</h3>
-                    <p>Buat pesan dan kirim ke semua kontak dengan satu klik.</p>
+                    <p>Buat pesan dan kirim ke semua kontak</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section class="section pricing" id="pricing">
+    <section id="pricing" class="pricing">
         <div class="container">
-            <div class="section-title">
-                <h2>Harga Terjangkau</h2>
-                <p>Pilih paket yang sesuai dengan kebutuhan bisnis Anda</p>
+            <div class="section-header">
+                <h2>Paket Harga</h2>
+                <p>Pilih paket yang sesuai kebutuhan Anda</p>
             </div>
             
-            <div class="pricing-grid">
-                <div class="pricing-card animate-fadeIn">
+            <div class="pricing-cards">
+                <div class="pricing-card">
                     <div class="pricing-header">
-                        <div class="pricing-name">Starter</div>
-                        <div class="pricing-price">Rp 0</div>
-                        <div class="pricing-period">Gratis Selamanya</div>
+                        <h3>Gratis</h3>
+                        <div class="price">Rp 0<span>/bulan</span></div>
                     </div>
-                    
-                    <ul class="pricing-features">
+                    <ul class="features-list">
                         <li><i class="fas fa-check"></i> 100 pesan/hari</li>
-                        <li><i class="fas fa-check"></i> 500 kontak maksimal</li>
-                        <li><i class="fas fa-check"></i> Broadcast dasar</li>
-                        <li><i class="fas fa-times"></i> Penjadwalan</li>
-                        <li><i class="fas fa-times"></i> Support prioritas</li>
+                        <li><i class="fas fa-check"></i> 500 kontak</li>
+                        <li><i class="fas fa-check"></i> Basic analytics</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
                     </ul>
-                    
                     <a href="/register.html" class="btn btn-outline">Mulai Gratis</a>
                 </div>
                 
-                <div class="pricing-card popular animate-fadeIn" style="animation-delay: 0.2s">
-                    <div class="popular-badge">POPULAR</div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Paling Populer</div>
                     <div class="pricing-header">
-                        <div class="pricing-name">Pro</div>
-                        <div class="pricing-price">Rp 99k</div>
-                        <div class="pricing-period">per bulan</div>
+                        <h3>Pro</h3>
+                        <div class="price">Rp 99.000<span>/bulan</span></div>
                     </div>
-                    
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> 1000 pesan/hari</li>
-                        <li><i class="fas fa-check"></i> 5000 kontak maksimal</li>
-                        <li><i class="fas fa-check"></i> Semua fitur broadcast</li>
-                        <li><i class="fas fa-check"></i> Penjadwalan canggih</li>
-                        <li><i class="fas fa-check"></i> Support 24/7</li>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 1.000 pesan/hari</li>
+                        <li><i class="fas fa-check"></i> 5.000 kontak</li>
+                        <li><i class="fas fa-check"></i> Penjadwalan pesan</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                        <li><i class="fas fa-check"></i> Export data</li>
                     </ul>
-                    
-                    <a href="/register.html" class="btn btn-primary">Pilih Paket Ini</a>
+                    <a href="/register.html" class="btn btn-primary">Upgrade ke Pro</a>
                 </div>
                 
-                <div class="pricing-card animate-fadeIn" style="animation-delay: 0.4s">
+                <div class="pricing-card">
                     <div class="pricing-header">
-                        <div class="pricing-name">Business</div>
-                        <div class="pricing-price">Rp 299k</div>
-                        <div class="pricing-period">per bulan</div>
+                        <h3>Enterprise</h3>
+                        <div class="price">Rp 299.000<span>/bulan</span></div>
                     </div>
-                    
-                    <ul class="pricing-features">
+                    <ul class="features-list">
                         <li><i class="fas fa-check"></i> Unlimited pesan</li>
                         <li><i class="fas fa-check"></i> Unlimited kontak</li>
-                        <li><i class="fas fa-check"></i> Semua fitur Pro</li>
-                        <li><i class="fas fa-check"></i> API Access</li>
+                        <li><i class="fas fa-check"></i> API access</li>
+                        <li><i class="fas fa-check"></i> Custom integration</li>
                         <li><i class="fas fa-check"></i> Dedicated support</li>
                     </ul>
-                    
-                    <a href="/register.html" class="btn btn-outline">Kontak Sales</a>
+                    <a href="/register.html" class="btn btn-outline">Hubungi Kami</a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="section testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Apa Kata Pengguna</h2>
-                <p>Dibuktikan oleh ribuan bisnis di Indonesia</p>
-            </div>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial-card">
-                    <div class="testimonial-text">
-                        "WhatsBroadcast telah mengubah cara kami berkomunikasi dengan pelanggan. Dari yang sebelumnya manual, sekarang bisa kirim ke 5000 pelanggan dalam 5 menit!"
-                    </div>
-                    <div class="testimonial-author">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="author-avatar">
-                        <div class="author-info">
-                            <h4>Budi Santoso</h4>
-                            <p>Owner Toko Online</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="section faq" id="faq">
-        <div class="container">
-            <div class="section-title">
-                <h2>Pertanyaan Umum</h2>
-                <p>Temukan jawaban untuk pertanyaan yang sering diajukan</p>
-            </div>
-            
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Apakah aman menggunakan WhatsApp Business API?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Ya, sangat aman. Kami menggunakan sistem pairing code dan enkripsi end-to-end. Data Anda tidak disimpan di server kami.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Berapa maksimal kontak yang bisa di-broadcast?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Paket Starter: 500 kontak, Pro: 5000 kontak, Business: Unlimited. Anda bisa upgrade kapan saja.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Apakah ada batasan jumlah pesan?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Paket Starter: 100 pesan/hari, Pro: 1000 pesan/hari, Business: Unlimited. Semua paket termasuk fitur penjadwalan.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Bagaimana cara pembayaran?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Kami menerima transfer bank, e-wallet (OVO, GoPay, Dana), dan kartu kredit. Pembayaran bulanan atau tahunan.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Apakah ada uji coba gratis?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Ya! Paket Starter gratis selamanya dengan fitur dasar. Anda bisa upgrade ke Pro kapan saja.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <h2>Siap Tingkatkan Bisnis Anda?</h2>
-            <p>Bergabung dengan 10.000+ bisnis yang sudah menggunakan WhatsBroadcast untuk komunikasi yang lebih efektif.</p>
-            <a href="/register.html" class="btn btn-primary btn-large">
-                <i class="fas fa-rocket"></i> Daftar Sekarang - Gratis!
-            </a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h3>WhatsBroadcast</h3>
-                    <p>Platform broadcast WhatsApp terbaik di Indonesia. Aman, cepat, dan mudah digunakan.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsBroadcast</span>
                     </div>
+                    <p>Sistem broadcast WhatsApp yang aman, cepat, dan efisien untuk bisnis Anda.</p>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>Produk</h3>
-                    <ul class="footer-links">
-                        <li><a href="#features">Fitur</a></li>
-                        <li><a href="#pricing">Harga</a></li>
-                        <li><a href="#testimonials">Testimoni</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Menu</h4>
+                    <a href="/">Beranda</a>
+                    <a href="#features">Fitur</a>
+                    <a href="#how-it-works">Cara Kerja</a>
+                    <a href="#pricing">Harga</a>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>Perusahaan</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Karir</a></li>
-                        <li><a href="#">Kontak</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Dukungan</h4>
+                    <a href="/login.html">Masuk</a>
+                    <a href="/register.html">Daftar</a>
+                    <a href="#">Dokumentasi</a>
+                    <a href="#">Bantuan</a>
                 </div>
                 
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Syarat & Ketentuan</a></li>
-                        <li><a href="#">Kebijakan Privasi</a></li>
-                        <li><a href="#">Kebijakan Cookie</a></li>
-                        <li><a href="#">GDPR</a></li>
-                    </ul>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Syarat & Ketentuan</a>
+                    <a href="#">Kebijakan Privasi</a>
+                    <a href="#">Kebijakan Cookie</a>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 WhatsBroadcast. All rights reserved.</p>
-                <p>WhatsApp adalah merek dagang terdaftar dari WhatsApp LLC.</p>
+                <p>&copy; 2024 WhatsApp Broadcast Bot. Semua hak dilindungi.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu" style="display: none;">
-        <!-- Mobile menu content will be added dynamically -->
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <div class="notification-icon">
-            <i class="fas fa-check"></i>
-        </div>
-        <div class="notification-content">
-            <strong id="notificationTitle">Success!</strong>
-            <p id="notificationMessage">Operation completed successfully.</p>
-        </div>
-        <button onclick="closeNotification()" style="background: none; border: none; color: inherit; font-size: 20px; cursor: pointer;">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-
+    <script src="/js/utils.js"></script>
     <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
         });
         
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-                
-                const icon = question.querySelector('i');
-                icon.classList.toggle('fa-chevron-down');
-                icon.classList.toggle('fa-chevron-up');
-            });
-        });
-        
-        // Smooth Scrolling
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    // Close mobile menu if open
-                    if (window.innerWidth <= 768) {
-                        navLinks.style.display = 'none';
-                    }
-                    
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.nav-menu').classList.remove('active');
                 }
             });
         });
-        
-        // Active Nav Link on Scroll
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section[id]');
-            const scrollPosition = window.scrollY + 100;
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    document.querySelectorAll('.nav-link').forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
-                        }
-                    });
-                }
-            });
-        });
-        
-        // Animation on Scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fadeIn');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.animate-fadeIn').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Notification System
-        function showNotification(title, message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const notificationTitle = document.getElementById('notificationTitle');
-            const notificationMessage = document.getElementById('notificationMessage');
-            
-            notification.className = `notification ${type === 'success' ? 'notification-success' : 'notification-error'}`;
-            notificationTitle.textContent = title;
-            notificationMessage.textContent = message;
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                closeNotification();
-            }, 5000);
-        }
-        
-        function closeNotification() {
-            const notification = document.getElementById('notification');
-            notification.classList.remove('show');
-        }
-        
-        // Check for URL parameters (for success messages)
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const registered = urlParams.get('registered');
-            const loginError = urlParams.get('error');
-            
-            if (registered === 'true') {
-                showNotification('Pendaftaran Berhasil!', 'Silakan login untuk melanjutkan.', 'success');
-            }
-            
-            if (loginError === 'true') {
-                showNotification('Login Gagal', 'Email atau password salah.', 'error');
-            }
-        });
-        
-        // Newsletter Subscription
-        const newsletterForm = document.createElement('form');
-        newsletterForm.innerHTML = `
-            <div style="display: flex; gap: 10px; max-width: 400px; margin: 20px auto;">
-                <input type="email" placeholder="Email Anda" required 
-                       style="flex: 1; padding: 12px 15px; border: 2px solid rgba(255,255,255,0.2); 
-                              border-radius: 10px; background: rgba(255,255,255,0.1); color: white; outline: none;">
-                <button type="submit" class="btn btn-primary" 
-                        style="white-space: nowrap;">Subscribe</button>
-            </div>
-        `;
-        
-        newsletterForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = newsletterForm.querySelector('input').value;
-            
-            // Simpan ke localStorage (bisa diganti dengan API call)
-            const subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
-            subscribers.push({
-                email,
-                subscribedAt: new Date().toISOString()
-            });
-            localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers));
-            
-            showNotification('Berhasil Subscribe!', 'Anda akan mendapatkan update terbaru dari kami.', 'success');
-            newsletterForm.querySelector('input').value = '';
-        });
-        
-        // Add newsletter to CTA section
-        document.querySelector('.cta .container').appendChild(newspaperForm);
     </script>
 </body>
 </html>
