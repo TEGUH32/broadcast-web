@@ -4,2080 +4,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - WhatsApp Broadcast Bot</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* ===== RESET & BASE STYLES ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --primary-light: #c3dafe;
-            --secondary: #764ba2;
-            --secondary-dark: #5c3a81;
-            --success: #10b981;
-            --success-dark: #059669;
-            --danger: #ef4444;
-            --danger-dark: #dc2626;
-            --warning: #f59e0b;
-            --warning-dark: #d97706;
-            --info: #3b82f6;
-            --info-dark: #2563eb;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --radius-sm: 0.375rem;
-            --radius: 0.5rem;
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
-            --radius-xl: 1.5rem;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--gray-800);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* ===== TYPOGRAPHY ===== */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
-            line-height: 1.2;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-
-        h1 { font-size: 3rem; }
-        h2 { font-size: 2.25rem; }
-        h3 { font-size: 1.875rem; }
-        h4 { font-size: 1.5rem; }
-        h5 { font-size: 1.25rem; }
-        h6 { font-size: 1.125rem; }
-
-        p {
-            margin-bottom: 1rem;
-        }
-
-        a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        a:hover {
-            color: var(--primary-dark);
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            line-height: 1.5;
-            border-radius: var(--radius);
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-        }
-
-        .btn-secondary {
-            background: var(--gray-200);
-            color: var(--gray-800);
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray-300);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: var(--success-dark);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: var(--danger-dark);
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: white;
-        }
-
-        .btn-warning:hover {
-            background: var(--warning-dark);
-        }
-
-        .btn-lg {
-            padding: 1rem 2rem;
-            font-size: 1.125rem;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
-
-        .btn-block {
-            width: 100%;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        /* ===== FORMS ===== */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            border: 2px solid var(--gray-300);
-            border-radius: var(--radius);
-            background: white;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-input.error {
-            border-color: var(--danger);
-        }
-
-        .form-text {
-            display: block;
-            margin-top: 0.25rem;
-            font-size: 0.875rem;
-            color: var(--gray-600);
-        }
-
-        .form-text.error {
-            color: var(--danger);
-        }
-
-        /* ===== ALERTS ===== */
-        .alert {
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            margin-bottom: 1.5rem;
-            border: 1px solid transparent;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-
-        .alert-icon {
-            font-size: 1.25rem;
-            line-height: 1;
-        }
-
-        .alert-content {
-            flex: 1;
-        }
-
-        .alert-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .alert-message {
-            font-size: 0.875rem;
-        }
-
-        .alert-success {
-            background-color: #f0fdf4;
-            border-color: #bbf7d0;
-            color: #166534;
-        }
-
-        .alert-error {
-            background-color: #fef2f2;
-            border-color: #fecaca;
-            color: #991b1b;
-        }
-
-        .alert-warning {
-            background-color: #fffbeb;
-            border-color: #fde68a;
-            color: #92400e;
-        }
-
-        .alert-info {
-            background-color: #eff6ff;
-            border-color: #bfdbfe;
-            color: #1e40af;
-        }
-
-        /* ===== CARDS ===== */
-        .card {
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-2xl);
-        }
-
-        .card-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .card-footer {
-            padding: 1.5rem;
-            border-top: 1px solid var(--gray-200);
-            background: var(--gray-50);
-        }
-
-        /* ===== LOADING STATES ===== */
-        .loading {
-            display: inline-block;
-            width: 1.25rem;
-            height: 1.25rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* ===== REGISTER PAGE SPECIFIC STYLES ===== */
-        .register-container {
-            width: 100%;
-            max-width: 500px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .register-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .logo-icon {
-            background: rgba(255, 255, 255, 0.2);
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .register-header h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: white;
-        }
-
-        .register-header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .progress-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: white;
-            width: 33.33%;
-            transition: width 0.3s;
-        }
-
-        .register-content {
-            padding: 40px;
-        }
-
-        .form-step {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .step-indicator::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 10%;
-            right: 10%;
-            height: 2px;
-            background: var(--gray-200);
-            z-index: 1;
-        }
-
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step-number {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--gray-200);
-            color: var(--gray-600);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-bottom: 5px;
-            transition: all 0.3s;
-        }
-
-        .step.active .step-number {
-            background: var(--primary);
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
-        }
-
-        .step.completed .step-number {
-            background: var(--success);
-            color: white;
-        }
-
-        .step.completed .step-number::after {
-            content: '✓';
-        }
-
-        .step-label {
-            font-size: 12px;
-            color: var(--gray-600);
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .step.active .step-label {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .form-label .required {
-            color: var(--danger);
-        }
-
-        .input-group {
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray-400);
-            font-size: 18px;
-        }
-
-        .error-message {
-            color: var(--danger);
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        /* Password Strength Meter */
-        .password-strength {
-            margin-top: 10px;
-        }
-
-        .strength-bar {
-            height: 6px;
-            background: var(--gray-200);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 5px;
-        }
-
-        .strength-fill {
-            height: 100%;
-            width: 0;
-            border-radius: 3px;
-            transition: width 0.3s, background 0.3s;
-        }
-
-        .strength-text {
-            font-size: 12px;
-            color: var(--gray-600);
-            text-align: right;
-        }
-
-        /* Terms and Conditions */
-        .terms-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .terms-group input[type="checkbox"] {
-            margin-top: 3px;
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .terms-text {
-            font-size: 14px;
-            color: var(--gray-600);
-            line-height: 1.5;
-        }
-
-        .terms-text a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .terms-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* Button Groups */
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .btn-group .btn {
-            flex: 1;
-        }
-
-        /* Register Footer */
-        .register-footer {
-            text-align: center;
-            margin-top: 30px;
-            color: var(--gray-600);
-            font-size: 14px;
-        }
-
-        .register-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .register-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Success Screen */
-        .success-screen {
-            text-align: center;
-            padding: 40px 0;
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-
-        .success-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--success), #34d399);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            color: white;
-            font-size: 48px;
-            animation: bounce 0.5s;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .success-screen h2 {
-            color: var(--dark);
-            margin-bottom: 15px;
-            font-size: 28px;
-        }
-
-        .success-screen p {
-            color: var(--gray-600);
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        /* Verification Code Input */
-        .verification-code {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .verification-input {
-            width: 50px;
-            height: 60px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            border: 2px solid var(--gray-300);
-            border-radius: var(--radius);
-            background: white;
-            transition: all 0.3s;
-        }
-
-        .verification-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .verification-input.filled {
-            border-color: var(--success);
-            background: rgba(16, 185, 129, 0.05);
-        }
-
-        /* Password Toggle */
-        .password-toggle {
-            position: absolute;
-            right: 45px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--gray-400);
-            cursor: pointer;
-            font-size: 18px;
-            padding: 5px;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .password-toggle:hover {
-            color: var(--gray-600);
-            background: var(--gray-100);
-        }
-
-        /* Resend Timer */
-        .resend-timer {
-            font-size: 14px;
-            color: var(--gray-600);
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        /* Radio Buttons */
-        .radio-group {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px;
-            border: 2px solid var(--gray-300);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .radio-option:hover {
-            border-color: var(--primary-light);
-            background: var(--gray-50);
-        }
-
-        .radio-option input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
-        .radio-option span {
-            font-weight: 500;
-            color: var(--gray-700);
-        }
-
-        /* Back Home Button */
-        .back-home {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-
-        .back-home a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: var(--radius);
-            transition: background 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .back-home a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .language-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            transition: background 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .language-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Animation for shake effect */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .register-container {
-                max-width: 100%;
-                border-radius: 16px;
-            }
-            
-            .register-header {
-                padding: 30px 20px;
-            }
-            
-            .register-content {
-                padding: 30px 20px;
-            }
-            
-            .logo {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            
-            .logo-text {
-                font-size: 24px;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .step-indicator::before {
-                left: 5%;
-                right: 5%;
-            }
-            
-            h1 { font-size: 2.25rem; }
-            h2 { font-size: 1.875rem; }
-            h3 { font-size: 1.5rem; }
-        }
-
-        @media (max-width: 480px) {
-            .register-header h1 {
-                font-size: 20px;
-            }
-            
-            .verification-input {
-                width: 40px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            .verification-code {
-                gap: 5px;
-            }
-            
-            .radio-group {
-                grid-template-columns: 1fr;
-            }
-            
-            .back-home, .language-selector {
-                position: relative;
-                top: auto;
-                left: auto;
-                right: auto;
-                margin-bottom: 15px;
-            }
-            
-            .back-home a, .language-btn {
-                display: inline-flex;
-                width: auto;
-            }
-        }
-
-        /* Accessibility */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--gray-100);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--gray-400);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-500);
-        }
-    </style>
 </head>
-<body>
-    <!-- Back to Home Button -->
-    <div class="back-home">
-        <a href="/">
-            <i class="fas fa-arrow-left"></i>
-            <span>Kembali ke Beranda</span>
-        </a>
-    </div>
-
-    <!-- Language Selector -->
-    <div class="language-selector">
-        <button class="language-btn" id="languageBtn">
-            <i class="fas fa-globe"></i>
-            <span>ID</span>
-        </button>
-    </div>
-
-    <!-- Main Register Container -->
-    <div class="register-container">
-        <!-- Header Section -->
-        <div class="register-header">
-            <div class="logo">
-                <div class="logo-icon">
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="logo">
                     <i class="fab fa-whatsapp"></i>
-                </div>
-                <div class="logo-text">WhatsBroadcast</div>
+                    <span>WhatsBroadcast</span>
+                </a>
+                <h2>Buat Akun Baru</h2>
+                <p>Daftar gratis dan mulai broadcast WhatsApp Anda.</p>
             </div>
-            <h1 id="stepTitle">Buat Akun Baru</h1>
-            <p id="stepDescription">Isi data diri Anda untuk mulai menggunakan platform</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+            
+            <form id="registerForm" class="auth-form">
+                <input type="hidden" name="_csrf" id="csrfToken">
+                
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Pilih username"
+                        required
+                    >
+                    <div class="hint">Hanya huruf, angka, dan underscore</div>
+                    <div class="error-message" id="usernameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Masukkan email aktif"
+                        required
+                    >
+                    <div class="error-message" id="emailError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">
+                        <i class="fas fa-phone"></i> Nomor Telepon (Opsional)
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        placeholder="0812-3456-7890"
+                    >
+                    <div class="hint">Format: 0812-3456-7890</div>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Buat password kuat"
+                            required
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar"></div>
+                        <div class="strength-text">Kekuatan password: <span>Lemah</span></div>
+                    </div>
+                    <div class="hint">Minimal 8 karakter dengan huruf besar, kecil, dan angka</div>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i> Konfirmasi Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            placeholder="Ulangi password"
+                            required
+                        >
+                        <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox">
+                        <input type="checkbox" id="agreeToTerms" name="agreeToTerms" required>
+                        <span>Saya menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a></span>
+                    </label>
+                    <div class="error-message" id="termsError"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="registerBtn">
+                    <i class="fas fa-user-plus"></i> Daftar Sekarang
+                    <div class="spinner hidden" id="registerSpinner"></div>
+                </button>
+                
+                <div class="auth-divider">
+                    <span>Sudah punya akun?</span>
+                </div>
+                
+                <a href="/login.html" class="btn btn-outline btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Masuk ke Akun
+                </a>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Dengan mendaftar, Anda akan mendapatkan:</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> 100 pesan gratis/hari</li>
+                    <li><i class="fas fa-check"></i> Akses ke semua fitur dasar</li>
+                    <li><i class="fas fa-check"></i> Support email</li>
+                </ul>
             </div>
         </div>
-
-        <!-- Content Section -->
-        <div class="register-content">
-            <!-- Step 1: Account Information -->
-            <div class="form-step active" id="step1">
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step active" data-step="1">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Akun</div>
+        
+        <div class="auth-side">
+            <div class="auth-side-content">
+                <h3>Keuntungan Bergabung</h3>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-rocket"></i>
                     </div>
-                    <div class="step" data-step="2">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Profil</div>
-                    </div>
-                    <div class="step" data-step="3">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Verifikasi</div>
+                    <div class="benefit-content">
+                        <h4>Mulai Cepat</h4>
+                        <p>Dalam 5 menit Anda sudah bisa broadcast</p>
                     </div>
                 </div>
-
-                <!-- Alert Container -->
-                <div class="alert alert-info" id="alert" style="display: none;">
-                    <div class="alert-icon">
-                        <i class="fas fa-info-circle"></i>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <div class="alert-content">
-                        <div class="alert-title" id="alertTitle">Info</div>
-                        <div class="alert-message" id="alertMessage"></div>
-                    </div>
-                </div>
-
-                <!-- Username Field -->
-                <div class="form-group">
-                    <label class="form-label" for="username">
-                        Username <span class="required">*</span>
-                    </label>
-                    <div class="input-group">
-                        <input type="text" 
-                               id="username" 
-                               class="form-input" 
-                               placeholder="pilih username unik"
-                               maxlength="20"
-                               required
-                               autocomplete="username">
-                        <div class="input-icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="error-message" id="usernameError"></div>
-                    </div>
-                    <div class="form-text">
-                        Hanya huruf, angka, dan underscore. Minimal 3 karakter.
+                    <div class="benefit-content">
+                        <h4>Aman Terjamin</h4>
+                        <p>Sistem pairing code untuk keamanan maksimal</p>
                     </div>
                 </div>
-
-                <!-- Email Field -->
-                <div class="form-group">
-                    <label class="form-label" for="email">
-                        Email <span class="required">*</span>
-                    </label>
-                    <div class="input-group">
-                        <input type="email" 
-                               id="email" 
-                               class="form-input" 
-                               placeholder="email@contoh.com"
-                               required
-                               autocomplete="email">
-                        <div class="input-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="error-message" id="emailError"></div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="benefit-content">
+                        <h4>Analytics Lengkap</h4>
+                        <p>Pantau performa broadcast secara real-time</p>
                     </div>
                 </div>
-
-                <!-- Password Field -->
-                <div class="form-group">
-                    <label class="form-label" for="password">
-                        Password <span class="required">*</span>
-                    </label>
-                    <div class="input-group">
-                        <input type="password" 
-                               id="password" 
-                               class="form-input" 
-                               placeholder="buat password yang kuat"
-                               required
-                               autocomplete="new-password">
-                        <button type="button" class="password-toggle" data-target="password">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <div class="input-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="error-message" id="passwordError"></div>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <h4>10K+</h4>
+                        <p>Pengguna Aktif</p>
                     </div>
-                    
-                    <!-- Password Strength Meter -->
-                    <div class="password-strength">
-                        <div class="strength-bar">
-                            <div class="strength-fill" id="passwordStrengthBar"></div>
-                        </div>
-                        <div class="strength-text" id="passwordStrengthText">Sangat Lemah</div>
+                    <div class="stat">
+                        <h4>98%</h4>
+                        <p>Success Rate</p>
                     </div>
-                    
-                    <div class="form-text">
-                        Minimal 8 karakter dengan huruf besar, angka, dan simbol.
+                    <div class="stat">
+                        <h4>24/7</h4>
+                        <p>Support</p>
                     </div>
-                </div>
-
-                <!-- Confirm Password Field -->
-                <div class="form-group">
-                    <label class="form-label" for="confirmPassword">
-                        Konfirmasi Password <span class="required">*</span>
-                    </label>
-                    <div class="input-group">
-                        <input type="password" 
-                               id="confirmPassword" 
-                               class="form-input" 
-                               placeholder="ulangi password"
-                               required
-                               autocomplete="new-password">
-                        <button type="button" class="password-toggle" data-target="confirmPassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <div class="input-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="error-message" id="confirmPasswordError"></div>
-                    </div>
-                </div>
-
-                <!-- Next Button -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary btn-block" id="nextStep1">
-                        <span id="nextStep1Text">Lanjut</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-
-                <!-- Footer Links -->
-                <div class="register-footer">
-                    <p>Sudah punya akun? <a href="/login.html">Masuk disini</a></p>
-                </div>
-            </div>
-
-            <!-- Step 2: Profile Information -->
-            <div class="form-step" id="step2">
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step completed" data-step="1">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Akun</div>
-                    </div>
-                    <div class="step active" data-step="2">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Profil</div>
-                    </div>
-                    <div class="step" data-step="3">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Verifikasi</div>
-                    </div>
-                </div>
-
-                <!-- Full Name Field -->
-                <div class="form-group">
-                    <label class="form-label" for="fullName">Nama Lengkap</label>
-                    <div class="input-group">
-                        <input type="text" 
-                               id="fullName" 
-                               class="form-input" 
-                               placeholder="nama lengkap Anda"
-                               autocomplete="name">
-                        <div class="input-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Phone Number Field -->
-                <div class="form-group">
-                    <label class="form-label" for="phone">
-                        Nomor WhatsApp <span class="required">*</span>
-                    </label>
-                    <div class="input-group">
-                        <input type="tel" 
-                               id="phone" 
-                               class="form-input" 
-                               placeholder="6281234567890"
-                               required
-                               autocomplete="tel">
-                        <div class="input-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div class="error-message" id="phoneError"></div>
-                    </div>
-                    <div class="form-text">
-                        Gunakan format 628xxxx (tanpa +, spasi, atau tanda hubung)
-                    </div>
-                </div>
-
-                <!-- Company Field -->
-                <div class="form-group">
-                    <label class="form-label" for="company">Nama Perusahaan (Opsional)</label>
-                    <div class="input-group">
-                        <input type="text" 
-                               id="company" 
-                               class="form-input" 
-                               placeholder="nama perusahaan Anda"
-                               autocomplete="organization">
-                        <div class="input-icon">
-                            <i class="fas fa-building"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Usage Type Selection -->
-                <div class="form-group">
-                    <label class="form-label">Jenis Penggunaan</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="usageType" value="personal" checked>
-                            <span>Personal</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="usageType" value="business">
-                            <span>Bisnis</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Terms and Conditions -->
-                <div class="terms-group">
-                    <input type="checkbox" id="terms" required>
-                    <label for="terms" class="terms-text">
-                        Saya setuju dengan <a href="#" target="_blank">Syarat & Ketentuan</a> dan 
-                        <a href="#" target="_blank">Kebijakan Privasi</a> WhatsBroadcast. 
-                        Saya juga menyetujui bahwa WhatsApp adalah merek dagang dari WhatsApp LLC.
-                    </label>
-                </div>
-
-                <!-- Navigation Buttons -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" id="prevStep2">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Kembali</span>
-                    </button>
-                    <button type="button" class="btn btn-primary" id="nextStep2">
-                        <span id="nextStep2Text">Lanjut</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Step 3: Verification -->
-            <div class="form-step" id="step3">
-                <!-- Step Indicator -->
-                <div class="step-indicator">
-                    <div class="step completed" data-step="1">
-                        <div class="step-number">1</div>
-                        <div class="step-label">Akun</div>
-                    </div>
-                    <div class="step completed" data-step="2">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Profil</div>
-                    </div>
-                    <div class="step active" data-step="3">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Verifikasi</div>
-                    </div>
-                </div>
-
-                <!-- Verification Header -->
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="width: 80px; height: 80px; background: var(--gray-100); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; color: var(--primary);">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <h3 style="color: var(--dark); margin-bottom: 10px;">Verifikasi Email</h3>
-                    <p style="color: var(--gray-600); margin-bottom: 5px;">
-                        Kami telah mengirim kode verifikasi ke 
-                        <strong id="verificationEmail">email@contoh.com</strong>
-                    </p>
-                    <p style="color: var(--gray-600); font-size: 14px;">
-                        Kode akan kadaluarsa dalam 10 menit
-                    </p>
-                </div>
-
-                <!-- Verification Code Input -->
-                <div class="verification-code">
-                    <input type="text" class="verification-input" maxlength="1" data-index="0" autocomplete="off" inputmode="numeric">
-                    <input type="text" class="verification-input" maxlength="1" data-index="1" autocomplete="off" inputmode="numeric">
-                    <input type="text" class="verification-input" maxlength="1" data-index="2" autocomplete="off" inputmode="numeric">
-                    <input type="text" class="verification-input" maxlength="1" data-index="3" autocomplete="off" inputmode="numeric">
-                    <input type="text" class="verification-input" maxlength="1" data-index="4" autocomplete="off" inputmode="numeric">
-                    <input type="text" class="verification-input" maxlength="1" data-index="5" autocomplete="off" inputmode="numeric">
-                </div>
-
-                <!-- Resend Code Section -->
-                <div style="text-align: center; margin: 20px 0;">
-                    <button type="button" id="resendCode" class="btn btn-outline btn-sm">
-                        <i class="fas fa-redo"></i> Kirim ulang kode
-                    </button>
-                    <div class="resend-timer" id="resendTimer"></div>
-                </div>
-
-                <!-- Navigation Buttons -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" id="prevStep3">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Kembali</span>
-                    </button>
-                    <button type="button" class="btn btn-primary" id="verifyBtn">
-                        <span id="verifyBtnText">Verifikasi</span>
-                        <div class="loading" id="verifyLoading" style="display: none;"></div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Success Screen -->
-            <div class="success-screen" id="successScreen">
-                <!-- Success Icon -->
-                <div class="success-icon">
-                    <i class="fas fa-check"></i>
-                </div>
-
-                <!-- Success Message -->
-                <h2>Pendaftaran Berhasil!</h2>
-                <p>
-                    Akun Anda telah berhasil dibuat dan diverifikasi. 
-                    Sekarang Anda dapat mengakses semua fitur WhatsBroadcast 
-                    untuk mengelola broadcast WhatsApp Anda.
-                </p>
-                <p style="font-size: 14px; color: var(--gray-600); margin-top: 10px;">
-                    <i class="fas fa-info-circle"></i> 
-                    Anda akan diarahkan ke dashboard dalam 
-                    <span id="redirectTimer">5</span> detik
-                </p>
-
-                <!-- Action Buttons -->
-                <div class="btn-group" style="justify-content: center; margin-top: 30px;">
-                    <a href="/dashboard.html" class="btn btn-primary">
-                        <i class="fas fa-rocket"></i> Masuk ke Dashboard
-                    </a>
-                    <a href="/login.html" class="btn btn-secondary">
-                        <i class="fas fa-user"></i> Login dengan Akun Baru
-                    </a>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="/js/auth.js"></script>
     <script>
-        // ===== GLOBAL VARIABLES =====
-        let currentStep = 1;
-        const totalSteps = 3;
-        let resendTimer = 60;
-        let timerInterval = null;
-        let registrationData = {};
-
-        // ===== DOM ELEMENTS =====
-        const stepTitle = document.getElementById('stepTitle');
-        const stepDescription = document.getElementById('stepDescription');
-        const progressFill = document.getElementById('progressFill');
-        const verificationEmail = document.getElementById('verificationEmail');
-
-        // Step titles and descriptions
-        const stepTitles = {
-            1: 'Buat Akun Baru',
-            2: 'Lengkapi Profil',
-            3: 'Verifikasi Email'
-        };
-
-        const stepDescriptions = {
-            1: 'Isi data diri Anda untuk mulai menggunakan platform',
-            2: 'Tambahkan informasi profil untuk pengalaman yang lebih personal',
-            3: 'Verifikasi email Anda untuk mengaktifkan akun'
-        };
-
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
-            initializePage();
-            setupEventListeners();
-            updateStepIndicator();
-            setupVerificationInputs();
-            checkExistingSession();
-        });
-
-        // ===== PAGE INITIALIZATION =====
-        function initializePage() {
-            // Auto-focus first input
-            document.getElementById('username').focus();
-            
-            // Set current year in footer if exists
-            const yearElement = document.getElementById('currentYear');
-            if (yearElement) {
-                yearElement.textContent = new Date().getFullYear();
-            }
-            
-            // Check for URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const registered = urlParams.get('registered');
-            const error = urlParams.get('error');
-            
-            if (registered === 'true') {
-                showAlert('Pendaftaran berhasil! Silakan login.', 'success');
-            }
-            
-            if (error) {
-                showAlert('Terjadi kesalahan. Silakan coba lagi.', 'error');
-            }
-        }
-
-        // ===== EVENT LISTENERS SETUP =====
-        function setupEventListeners() {
-            // Password toggle buttons
-            document.querySelectorAll('.password-toggle').forEach(button => {
-                button.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const input = document.getElementById(targetId);
-                    const icon = this.querySelector('i');
-                    
-                    if (input.type === 'password') {
-                        input.type = 'text';
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    } else {
-                        input.type = 'password';
-                        icon.classList.remove('fa-eye-slash');
-                        icon.classList.add('fa-eye');
-                    }
-                });
-            });
-            
-            // Password strength indicator
-            document.getElementById('password').addEventListener('input', updatePasswordStrength);
-            
-            // Step navigation buttons
-            document.getElementById('nextStep1').addEventListener('click', validateStep1);
-            document.getElementById('prevStep2').addEventListener('click', () => goToStep(1));
-            document.getElementById('nextStep2').addEventListener('click', validateStep2);
-            document.getElementById('prevStep3').addEventListener('click', () => goToStep(2));
-            document.getElementById('verifyBtn').addEventListener('click', validateStep3);
-            document.getElementById('resendCode').addEventListener('click', resendVerificationCode);
-            
-            // Language selector
-            document.getElementById('languageBtn').addEventListener('click', toggleLanguage);
-            
-            // Enter key navigation
-            document.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    const activeStep = document.querySelector('.form-step.active');
-                    const stepId = activeStep.id;
-                    
-                    if (stepId === 'step1') {
-                        validateStep1();
-                    } else if (stepId === 'step2') {
-                        validateStep2();
-                    } else if (stepId === 'step3') {
-                        validateStep3();
-                    }
+        // CSRF Token
+        fetch('/session')
+            .then(res => res.json())
+            .then(data => {
+                if (data.csrfToken) {
+                    document.getElementById('csrfToken').value = data.csrfToken;
                 }
             });
-            
-            // Auto-advance on input completion
-            document.querySelectorAll('.verification-input').forEach(input => {
-                input.addEventListener('input', function() {
-                    if (this.value.length === 1) {
-                        const nextIndex = parseInt(this.getAttribute('data-index')) + 1;
-                        const nextInput = document.querySelector(`.verification-input[data-index="${nextIndex}"]`);
-                        if (nextInput) {
-                            nextInput.focus();
-                        } else {
-                            document.getElementById('verifyBtn').focus();
-                        }
-                    }
-                });
-            });
-        }
-
-        // ===== STEP MANAGEMENT =====
-        function updateStepIndicator() {
-            // Update progress bar
-            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            progressFill.style.width = percentage + '%';
-            
-            // Update titles
-            stepTitle.textContent = stepTitles[currentStep];
-            stepDescription.textContent = stepDescriptions[currentStep];
-            
-            // Update step indicators
-            document.querySelectorAll('.step').forEach(step => {
-                const stepNumber = parseInt(step.getAttribute('data-step'));
-                step.classList.remove('active', 'completed');
-                
-                if (stepNumber === currentStep) {
-                    step.classList.add('active');
-                } else if (stepNumber < currentStep) {
-                    step.classList.add('completed');
-                }
-            });
-            
-            // Show/hide steps
-            document.querySelectorAll('.form-step').forEach(step => {
-                step.classList.remove('active');
-            });
-            
-            const currentStepElement = document.getElementById(`step${currentStep}`);
-            if (currentStepElement) {
-                currentStepElement.classList.add('active');
-            }
-            
-            // Handle verification step
-            if (currentStep === 3) {
-                const email = document.getElementById('email').value;
-                verificationEmail.textContent = email;
-                startVerificationTimer();
-            }
-        }
-
-        function goToStep(step) {
-            currentStep = step;
-            updateStepIndicator();
-            
-            // Scroll to top of form
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // ===== STEP 1 VALIDATION =====
-        function validateStep1() {
-            const username = document.getElementById('username').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            let isValid = true;
-            
-            // Clear previous errors
-            clearAllErrors();
-            
-            // Validate username
-            if (!username) {
-                showError('usernameError', 'Username harus diisi');
-                isValid = false;
-            } else if (username.length < 3) {
-                showError('usernameError', 'Username minimal 3 karakter');
-                isValid = false;
-            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-                showError('usernameError', 'Username hanya boleh berisi huruf, angka, dan underscore');
-                isValid = false;
-            }
-            
-            // Validate email
-            if (!email) {
-                showError('emailError', 'Email harus diisi');
-                isValid = false;
-            } else if (!isValidEmail(email)) {
-                showError('emailError', 'Format email tidak valid');
-                isValid = false;
-            }
-            
-            // Validate password
-            if (!password) {
-                showError('passwordError', 'Password harus diisi');
-                isValid = false;
-            } else if (password.length < 8) {
-                showError('passwordError', 'Password minimal 8 karakter');
-                isValid = false;
-            } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])/.test(password)) {
-                showError('passwordError', 'Password harus mengandung huruf besar, kecil, angka, dan simbol');
-                isValid = false;
-            }
-            
-            // Validate confirm password
-            if (!confirmPassword) {
-                showError('confirmPasswordError', 'Konfirmasi password harus diisi');
-                isValid = false;
-            } else if (password !== confirmPassword) {
-                showError('confirmPasswordError', 'Password tidak sama');
-                isValid = false;
-            }
-            
-            if (isValid) {
-                // Store step 1 data
-                registrationData = {
-                    username,
-                    email,
-                    password
-                };
-                
-                goToStep(2);
-            } else {
-                // Shake the form for visual feedback
-                const step1Form = document.getElementById('step1');
-                step1Form.classList.add('shake');
-                setTimeout(() => step1Form.classList.remove('shake'), 500);
-            }
-        }
-
-        // ===== STEP 2 VALIDATION =====
-        function validateStep2() {
-            const phone = document.getElementById('phone').value.trim();
-            const terms = document.getElementById('terms').checked;
-            
-            clearAllErrors();
-            
-            let isValid = true;
-            
-            // Validate phone
-            if (!phone) {
-                showError('phoneError', 'Nomor WhatsApp harus diisi');
-                isValid = false;
-            } else if (!/^628[1-9][0-9]{7,11}$/.test(phone)) {
-                showError('phoneError', 'Format nomor WhatsApp tidak valid. Gunakan format 628xxxx');
-                isValid = false;
-            }
-            
-            // Validate terms
-            if (!terms) {
-                showAlert('Anda harus menyetujui Syarat & Ketentuan untuk melanjutkan', 'warning');
-                isValid = false;
-            }
-            
-            if (isValid) {
-                // Add step 2 data
-                registrationData.fullName = document.getElementById('fullName').value.trim();
-                registrationData.phone = phone;
-                registrationData.company = document.getElementById('company').value.trim();
-                registrationData.usageType = document.querySelector('input[name="usageType"]:checked').value;
-                
-                // Show loading on button
-                const nextButton = document.getElementById('nextStep2');
-                const originalText = nextButton.innerHTML;
-                nextButton.innerHTML = '<div class="loading"></div>';
-                nextButton.disabled = true;
-                
-                // Simulate API call delay
-                setTimeout(() => {
-                    // In production, this would be a real API call
-                    simulateRegistrationAPI();
-                    
-                    // Restore button
-                    nextButton.innerHTML = originalText;
-                    nextButton.disabled = false;
-                }, 1500);
-            }
-        }
-
-        // ===== STEP 3 VALIDATION =====
-        function validateStep3() {
-            const code = getVerificationCode();
-            
-            if (code.length !== 6) {
-                showAlert('Masukkan kode verifikasi 6 digit lengkap', 'warning');
-                return;
-            }
-            
-            // Mark inputs as filled
-            document.querySelectorAll('.verification-input').forEach(input => {
-                if (input.value) {
-                    input.classList.add('filled');
-                }
-            });
-            
-            // Show loading
-            const verifyBtn = document.getElementById('verifyBtn');
-            const verifyBtnText = document.getElementById('verifyBtnText');
-            const verifyLoading = document.getElementById('verifyLoading');
-            
-            verifyBtnText.style.display = 'none';
-            verifyLoading.style.display = 'block';
-            verifyBtn.disabled = true;
-            
-            // Simulate verification API call
-            setTimeout(() => {
-                // In production, verify the code with backend
-                if (code === '123456') { // Default test code
-                    showSuccessScreen();
-                } else {
-                    showAlert('Kode verifikasi salah. Silakan coba lagi.', 'error');
-                    
-                    // Clear inputs
-                    document.querySelectorAll('.verification-input').forEach(input => {
-                        input.value = '';
-                        input.classList.remove('filled');
-                    });
-                    
-                    // Focus first input
-                    document.querySelector('.verification-input[data-index="0"]').focus();
-                }
-                
-                // Restore button
-                verifyBtnText.style.display = 'inline-block';
-                verifyLoading.style.display = 'none';
-                verifyBtn.disabled = false;
-            }, 2000);
-        }
-
-        // ===== PASSWORD STRENGTH =====
-        function updatePasswordStrength() {
-            const password = document.getElementById('password').value;
-            const strength = calculatePasswordStrength(password);
-            
-            const strengthBar = document.getElementById('passwordStrengthBar');
-            const strengthText = document.getElementById('passwordStrengthText');
-            
-            strengthBar.style.width = strength.percentage + '%';
-            strengthBar.style.background = strength.color;
-            strengthText.textContent = strength.text;
-            strengthText.style.color = strength.color;
-        }
-
-        function calculatePasswordStrength(password) {
-            let score = 0;
-            
-            // Length
-            if (password.length >= 8) score += 1;
-            if (password.length >= 12) score += 1;
-            
-            // Character variety
-            if (/[a-z]/.test(password)) score += 1;
-            if (/[A-Z]/.test(password)) score += 1;
-            if (/[0-9]/.test(password)) score += 1;
-            if (/[^A-Za-z0-9]/.test(password)) score += 1;
-            
-            const strengthLevels = [
-                { percentage: 20, text: 'Sangat Lemah', color: '#ef4444' },
-                { percentage: 40, text: 'Lemah', color: '#f97316' },
-                { percentage: 60, text: 'Sedang', color: '#f59e0b' },
-                { percentage: 80, text: 'Kuat', color: '#10b981' },
-                { percentage: 100, text: 'Sangat Kuat', color: '#059669' }
-            ];
-            
-            return strengthLevels[Math.min(score, 4)];
-        }
-
-        // ===== VERIFICATION CODE =====
-        function setupVerificationInputs() {
-            const inputs = document.querySelectorAll('.verification-input');
-            
-            inputs.forEach((input, index) => {
-                // Only allow digits
-                input.addEventListener('input', function(e) {
-                    this.value = this.value.replace(/\D/g, '');
-                    
-                    // Auto-focus next
-                    if (this.value.length === 1 && index < inputs.length - 1) {
-                        inputs[index + 1].focus();
-                    }
-                });
-                
-                // Handle backspace
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && !this.value && index > 0) {
-                        inputs[index - 1].focus();
-                        inputs[index - 1].value = '';
-                    }
-                });
-                
-                // Handle paste
-                input.addEventListener('paste', function(e) {
-                    e.preventDefault();
-                    const pastedData = e.clipboardData.getData('text');
-                    const digits = pastedData.replace(/\D/g, '').split('');
-                    
-                    digits.forEach((digit, digitIndex) => {
-                        if (index + digitIndex < inputs.length) {
-                            inputs[index + digitIndex].value = digit;
-                        }
-                    });
-                    
-                    // Focus last filled input
-                    const lastIndex = Math.min(index + digits.length - 1, inputs.length - 1);
-                    inputs[lastIndex].focus();
-                });
-            });
-        }
-
-        function getVerificationCode() {
-            const inputs = document.querySelectorAll('.verification-input');
-            return Array.from(inputs).map(input => input.value).join('');
-        }
-
-        // ===== VERIFICATION TIMER =====
-        function startVerificationTimer() {
-            resendTimer = 60;
-            const resendBtn = document.getElementById('resendCode');
-            const timerElement = document.getElementById('resendTimer');
-            
-            resendBtn.disabled = true;
-            resendBtn.classList.add('btn-secondary');
-            resendBtn.classList.remove('btn-outline');
-            updateResendTimer();
-            
-            if (timerInterval) {
-                clearInterval(timerInterval);
-            }
-            
-            timerInterval = setInterval(() => {
-                resendTimer--;
-                updateResendTimer();
-                
-                if (resendTimer <= 0) {
-                    clearInterval(timerInterval);
-                    resendBtn.disabled = false;
-                    resendBtn.classList.remove('btn-secondary');
-                    resendBtn.classList.add('btn-outline');
-                    timerElement.textContent = '';
-                }
-            }, 1000);
-        }
-
-        function updateResendTimer() {
-            const timerElement = document.getElementById('resendTimer');
-            if (resendTimer > 0) {
-                const minutes = Math.floor(resendTimer / 60);
-                const seconds = resendTimer % 60;
-                timerElement.textContent = `Kirim ulang dalam ${minutes}:${seconds.toString().padStart(2, '0')}`;
-            }
-        }
-
-        function resendVerificationCode() {
-            const resendBtn = document.getElementById('resendCode');
-            const originalHTML = resendBtn.innerHTML;
-            
-            resendBtn.innerHTML = '<div class="loading"></div>';
-            resendBtn.disabled = true;
-            
-            // Simulate API call
-            setTimeout(() => {
-                showAlert('Kode verifikasi baru telah dikirim ke email Anda.', 'success');
-                resendBtn.innerHTML = originalHTML;
-                startVerificationTimer();
-            }, 1000);
-        }
-
-        // ===== SUCCESS SCREEN =====
-        function showSuccessScreen() {
-            // Hide all steps
-            document.querySelectorAll('.form-step').forEach(step => {
-                step.style.display = 'none';
-            });
-            
-            // Show success screen
-            const successScreen = document.getElementById('successScreen');
-            successScreen.style.display = 'block';
-            
-            // Start redirect timer
-            let countdown = 5;
-            const timerElement = document.getElementById('redirectTimer');
-            
-            const timer = setInterval(() => {
-                countdown--;
-                timerElement.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(timer);
-                    window.location.href = '/dashboard.html';
-                }
-            }, 1000);
-        }
-
-        // ===== API SIMULATION =====
-        function simulateRegistrationAPI() {
-            // In production, this would be a real API call
-            // For demo purposes, we'll simulate a successful registration
-            showAlert('Registrasi berhasil! Mengirim kode verifikasi...', 'success');
-            
-            // Simulate delay for sending verification email
-            setTimeout(() => {
-                goToStep(3);
-            }, 1000);
-        }
-
-        // ===== LANGUAGE SUPPORT =====
-        let currentLanguage = 'id';
         
-        function toggleLanguage() {
-            currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
-            const languageBtn = document.getElementById('languageBtn');
-            languageBtn.querySelector('span').textContent = currentLanguage.toUpperCase();
-            updateLanguage(currentLanguage);
-        }
-
-        function updateLanguage(lang) {
-            const translations = {
-                id: {
-                    step1Title: 'Buat Akun Baru',
-                    step1Desc: 'Isi data diri Anda untuk mulai menggunakan platform',
-                    step2Title: 'Lengkapi Profil',
-                    step2Desc: 'Tambahkan informasi profil untuk pengalaman yang lebih personal',
-                    step3Title: 'Verifikasi Email',
-                    step3Desc: 'Verifikasi email Anda untuk mengaktifkan akun',
-                    usernameLabel: 'Username',
-                    emailLabel: 'Email',
-                    passwordLabel: 'Password',
-                    confirmPasswordLabel: 'Konfirmasi Password',
-                    fullNameLabel: 'Nama Lengkap',
-                    phoneLabel: 'Nomor WhatsApp',
-                    companyLabel: 'Nama Perusahaan',
-                    usageTypeLabel: 'Jenis Penggunaan',
-                    personalLabel: 'Personal',
-                    businessLabel: 'Bisnis',
-                    termsText: 'Saya setuju dengan',
-                    termsLink: 'Syarat & Ketentuan',
-                    andText: 'dan',
-                    privacyLink: 'Kebijakan Privasi',
-                    verificationTitle: 'Verifikasi Email',
-                    verificationText: 'Kami telah mengirim kode verifikasi ke',
-                    verificationHint: 'Kode akan kadaluarsa dalam 10 menit',
-                    successTitle: 'Pendaftaran Berhasil!',
-                    successText: 'Akun Anda telah berhasil dibuat dan diverifikasi.',
-                    backHome: 'Kembali ke Beranda',
-                    nextBtn: 'Lanjut',
-                    backBtn: 'Kembali',
-                    verifyBtn: 'Verifikasi',
-                    resendBtn: 'Kirim ulang kode',
-                    loginLink: 'Masuk disini',
-                    required: 'wajib diisi'
-                },
-                en: {
-                    step1Title: 'Create New Account',
-                    step1Desc: 'Fill in your details to start using the platform',
-                    step2Title: 'Complete Profile',
-                    step2Desc: 'Add profile information for a more personalized experience',
-                    step3Title: 'Email Verification',
-                    step3Desc: 'Verify your email to activate your account',
-                    usernameLabel: 'Username',
-                    emailLabel: 'Email',
-                    passwordLabel: 'Password',
-                    confirmPasswordLabel: 'Confirm Password',
-                    fullNameLabel: 'Full Name',
-                    phoneLabel: 'WhatsApp Number',
-                    companyLabel: 'Company Name',
-                    usageTypeLabel: 'Usage Type',
-                    personalLabel: 'Personal',
-                    businessLabel: 'Business',
-                    termsText: 'I agree to the',
-                    termsLink: 'Terms & Conditions',
-                    andText: 'and',
-                    privacyLink: 'Privacy Policy',
-                    verificationTitle: 'Email Verification',
-                    verificationText: 'We have sent a verification code to',
-                    verificationHint: 'Code will expire in 10 minutes',
-                    successTitle: 'Registration Successful!',
-                    successText: 'Your account has been successfully created and verified.',
-                    backHome: 'Back to Home',
-                    nextBtn: 'Next',
-                    backBtn: 'Back',
-                    verifyBtn: 'Verify',
-                    resendBtn: 'Resend Code',
-                    loginLink: 'Login here',
-                    required: 'required'
+        // Toggle password visibility
+        function setupPasswordToggle(inputId, buttonId) {
+            const button = document.getElementById(buttonId);
+            const input = document.getElementById(inputId);
+            
+            button.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'fas fa-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'fas fa-eye';
                 }
-            };
-            
-            const t = translations[lang];
-            
-            // Update step titles
-            stepTitles[1] = t.step1Title;
-            stepTitles[2] = t.step2Title;
-            stepTitles[3] = t.step3Title;
-            
-            stepDescriptions[1] = t.step1Desc;
-            stepDescriptions[2] = t.step2Desc;
-            stepDescriptions[3] = t.step3Desc;
-            
-            // Update current step
-            updateStepIndicator();
-            
-            // Update form labels
-            document.querySelector('label[for="username"]').innerHTML = `${t.usernameLabel} <span class="required">*</span>`;
-            document.querySelector('label[for="email"]').innerHTML = `${t.emailLabel} <span class="required">*</span>`;
-            document.querySelector('label[for="password"]').innerHTML = `${t.passwordLabel} <span class="required">*</span>`;
-            document.querySelector('label[for="confirmPassword"]').innerHTML = `${t.confirmPasswordLabel} <span class="required">*</span>`;
-            document.querySelector('label[for="fullName"]').textContent = t.fullNameLabel;
-            document.querySelector('label[for="phone"]').innerHTML = `${t.phoneLabel} <span class="required">*</span>`;
-            document.querySelector('label[for="company"]').textContent = t.companyLabel;
-            document.querySelector('.form-label:contains("Jenis Penggunaan")').textContent = t.usageTypeLabel;
-            
-            // Update radio labels
-            document.querySelector('.radio-option:first-child span').textContent = t.personalLabel;
-            document.querySelector('.radio-option:last-child span').textContent = t.businessLabel;
-            
-            // Update terms text
-            const termsText = document.querySelector('.terms-text');
-            termsText.innerHTML = `
-                ${t.termsText} <a href="#" target="_blank">${t.termsLink}</a> 
-                ${t.andText} <a href="#" target="_blank">${t.privacyLink}</a> WhatsBroadcast.
-            `;
-            
-            // Update verification section
-            document.querySelector('#step3 h3').textContent = t.verificationTitle;
-            const verificationText = document.querySelector('#step3 p');
-            verificationText.innerHTML = `${t.verificationText} <strong id="verificationEmail">${document.getElementById('email').value}</strong>`;
-            verificationText.nextElementSibling.textContent = t.verificationHint;
-            
-            // Update success screen
-            document.querySelector('#successScreen h2').textContent = t.successTitle;
-            document.querySelector('#successScreen p').textContent = t.successText;
-            
-            // Update buttons
-            document.querySelector('#nextStep1 span').textContent = t.nextBtn;
-            document.querySelector('#prevStep2 span').textContent = t.backBtn;
-            document.querySelector('#nextStep2 span').textContent = t.nextBtn;
-            document.querySelector('#prevStep3 span').textContent = t.backBtn;
-            document.querySelector('#verifyBtn span').textContent = t.verifyBtn;
-            document.querySelector('#resendCode').innerHTML = `<i class="fas fa-redo"></i> ${t.resendBtn}`;
-            
-            // Update footer
-            document.querySelector('.register-footer p').innerHTML = `Sudah punya akun? <a href="/login.html">${t.loginLink}</a>`;
-            
-            // Update back home
-            document.querySelector('.back-home a span').textContent = t.backHome;
-        }
-
-        // ===== HELPER FUNCTIONS =====
-        function showError(elementId, message) {
-            const element = document.getElementById(elementId);
-            const input = element.parentElement.querySelector('.form-input');
-            
-            element.textContent = message;
-            element.style.display = 'block';
-            input.classList.add('error');
-            input.classList.add('shake');
-            
-            setTimeout(() => {
-                input.classList.remove('shake');
-            }, 500);
-        }
-
-        function clearAllErrors() {
-            document.querySelectorAll('.error-message').forEach(el => {
-                el.style.display = 'none';
-                el.textContent = '';
-            });
-            
-            document.querySelectorAll('.form-input').forEach(el => {
-                el.classList.remove('error');
             });
         }
-
-        function showAlert(message, type = 'info') {
-            const alertDiv = document.getElementById('alert');
-            const alertTitle = document.getElementById('alertTitle');
-            const alertMessage = document.getElementById('alertMessage');
+        
+        setupPasswordToggle('password', 'togglePassword');
+        setupPasswordToggle('confirmPassword', 'toggleConfirmPassword');
+        
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.querySelector('.strength-bar');
+        const strengthText = document.querySelector('.strength-text span');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
             
-            // Set type
-            alertDiv.className = `alert alert-${type}`;
+            // Length check
+            if (password.length >= 8) strength += 25;
+            if (password.length >= 12) strength += 15;
             
-            // Set icon
-            const iconMap = {
-                success: 'check-circle',
-                error: 'exclamation-circle',
-                warning: 'exclamation-triangle',
-                info: 'info-circle'
-            };
+            // Complexity checks
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[a-z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 20;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
             
-            alertDiv.querySelector('.alert-icon').innerHTML = `<i class="fas fa-${iconMap[type]}"></i>`;
+            // Update UI
+            strengthBar.style.width = Math.min(strength, 100) + '%';
             
-            // Set title
-            const titleMap = {
-                success: 'Berhasil!',
-                error: 'Error!',
-                warning: 'Peringatan!',
-                info: 'Info'
-            };
-            
-            alertTitle.textContent = titleMap[type];
-            alertMessage.textContent = message;
-            
-            // Show alert
-            alertDiv.style.display = 'flex';
-            
-            // Auto hide after 5 seconds
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 5000);
-        }
-
-        function isValidEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        function checkExistingSession() {
-            const token = sessionStorage.getItem('registrationToken');
-            if (token && token !== 'temp-token') {
-                // User is already registered, redirect to dashboard
-                window.location.href = '/dashboard.html';
-            }
-        }
-
-        // ===== SECURITY MEASURES =====
-        // Clear sensitive data on page unload
-        window.addEventListener('beforeunload', () => {
-            if (currentStep < 3) {
-                sessionStorage.removeItem('registrationData');
-                sessionStorage.removeItem('registrationToken');
+            if (strength < 40) {
+                strengthBar.style.backgroundColor = '#e74c3c';
+                strengthText.textContent = 'Lemah';
+            } else if (strength < 70) {
+                strengthBar.style.backgroundColor = '#f39c12';
+                strengthText.textContent = 'Cukup';
+            } else if (strength < 90) {
+                strengthBar.style.backgroundColor = '#3498db';
+                strengthText.textContent = 'Baik';
+            } else {
+                strengthBar.style.backgroundColor = '#2ecc71';
+                strengthText.textContent = 'Sangat Baik';
             }
         });
-
-        // Clear password fields when page is hidden
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                // Only clear if not remembering
-                const password = document.getElementById('password');
-                const confirmPassword = document.getElementById('confirmPassword');
-                
-                if (password) password.value = '';
-                if (confirmPassword) confirmPassword.value = '';
-            }
-        });
-
-        // Prevent form resubmission
-        if (window.history.replaceState) {
-            window.history.replaceState(null, null, window.location.href);
-        }
     </script>
 </body>
 </html>
