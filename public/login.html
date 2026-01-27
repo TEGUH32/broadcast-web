@@ -4,878 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - WhatsApp Broadcast Bot</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 450px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-
-        .login-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .logo-icon {
-            background: rgba(255, 255, 255, 0.2);
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .login-header h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .login-header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-
-        .login-content {
-            padding: 40px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 14px;
-        }
-
-        .input-group {
-            position: relative;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 15px 45px 15px 15px;
-            border: 2px solid var(--gray-light);
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.3s;
-            background: white;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-input.error {
-            border-color: var(--danger);
-        }
-
-        .input-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-            font-size: 18px;
-        }
-
-        .error-message {
-            color: var(--danger);
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-        }
-
-        .forgot-password {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-secondary {
-            background: var(--gray-light);
-            color: var(--dark);
-            margin-top: 15px;
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray);
-            color: white;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 45%;
-            height: 1px;
-            background: var(--gray-light);
-        }
-
-        .divider::before {
-            left: 0;
-        }
-
-        .divider::after {
-            right: 0;
-        }
-
-        .social-login {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .social-btn {
-            padding: 12px;
-            border: 2px solid var(--gray-light);
-            border-radius: 10px;
-            background: white;
-            color: var(--dark);
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .social-btn:hover {
-            border-color: var(--primary);
-            background: var(--light);
-        }
-
-        .login-footer {
-            text-align: center;
-            margin-top: 30px;
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .login-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .login-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 25px;
-            display: none;
-        }
-
-        .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fca5a5;
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #a7f3d0;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 45px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--gray);
-            cursor: pointer;
-            font-size: 18px;
-        }
-
-        .password-toggle:hover {
-            color: var(--dark);
-        }
-
-        .language-selector {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .language-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .login-container {
-                max-width: 100%;
-            }
-            
-            .login-header {
-                padding: 30px 20px;
-            }
-            
-            .login-content {
-                padding: 30px 20px;
-            }
-            
-            .logo {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-            }
-            
-            .logo-text {
-                font-size: 24px;
-            }
-            
-            .social-login {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Animation */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.5s ease-in-out;
-        }
-
-        /* Back to Home */
-        .back-home {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .back-home a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .back-home a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-    </style>
 </head>
-<body>
-    <div class="back-home">
-        <a href="/">
-            <i class="fas fa-arrow-left"></i>
-            <span>Kembali ke Beranda</span>
-        </a>
-    </div>
-
-    <div class="language-selector">
-        <button class="language-btn" id="languageBtn">
-            <i class="fas fa-globe"></i>
-            <span>ID</span>
-        </button>
-    </div>
-
-    <div class="login-container">
-        <div class="login-header">
-            <div class="logo">
-                <div class="logo-icon">
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="logo">
                     <i class="fab fa-whatsapp"></i>
-                </div>
-                <div class="logo-text">WhatsBroadcast</div>
+                    <span>WhatsBroadcast</span>
+                </a>
+                <h2>Masuk ke Akun</h2>
+                <p>Selamat datang kembali! Silakan login untuk melanjutkan.</p>
             </div>
-            <h1>Masuk ke Akun Anda</h1>
-            <p>Masukkan kredensial untuk mengakses dashboard</p>
-        </div>
-
-        <div class="login-content">
-            <div class="alert" id="alert"></div>
-
-            <form id="loginForm">
+            
+            <form id="loginForm" class="auth-form">
+                <input type="hidden" name="_csrf" id="csrfToken">
+                
                 <div class="form-group">
-                    <label class="form-label" for="username">Username atau Email</label>
-                    <div class="input-group">
-                        <input type="text" 
-                               id="username" 
-                               class="form-input" 
-                               placeholder="masukkan username atau email"
-                               required>
-                        <div class="input-icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="error-message" id="usernameError"></div>
-                    </div>
+                    <label for="username">
+                        <i class="fas fa-user"></i> Username atau Email
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Masukkan username atau email"
+                        required
+                    >
+                    <div class="error-message" id="usernameError"></div>
                 </div>
-
+                
                 <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <div class="input-group">
-                        <input type="password" 
-                               id="password" 
-                               class="form-input" 
-                               placeholder="masukkan password"
-                               required>
-                        <button type="button" class="password-toggle" id="passwordToggle">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Masukkan password"
+                            required
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
                             <i class="fas fa-eye"></i>
                         </button>
-                        <div class="input-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="error-message" id="passwordError"></div>
                     </div>
+                    <div class="error-message" id="passwordError"></div>
                 </div>
-
+                
                 <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="rememberMe">
+                    <label class="checkbox">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
                         <span>Ingat saya</span>
                     </label>
-                    <a href="#" class="forgot-password" id="forgotPassword">Lupa password?</a>
+                    <a href="/forgot-password.html" class="forgot-password">
+                        Lupa password?
+                    </a>
                 </div>
-
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <span id="submitText">Masuk</span>
-                    <div class="loading" id="loadingSpinner" style="display: none;"></div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Masuk
+                    <div class="spinner hidden" id="loginSpinner"></div>
                 </button>
+                
+                <div class="auth-divider">
+                    <span>ATAU</span>
+                </div>
+                
+                <a href="/register.html" class="btn btn-outline btn-block">
+                    <i class="fas fa-user-plus"></i> Buat Akun Baru
+                </a>
             </form>
-
-            <div class="divider">atau lanjutkan dengan</div>
-
-            <div class="social-login">
-                <button type="button" class="social-btn" onclick="socialLogin('google')">
-                    <i class="fab fa-google"></i>
-                </button>
-                <button type="button" class="social-btn" onclick="socialLogin('facebook')">
-                    <i class="fab fa-facebook-f"></i>
-                </button>
-                <button type="button" class="social-btn" onclick="socialLogin('github')">
-                    <i class="fab fa-github"></i>
-                </button>
-            </div>
-
-            <a href="/register.html" class="btn btn-secondary">
-                <i class="fas fa-user-plus"></i>
-                <span>Buat Akun Baru</span>
-            </a>
-
-            <div class="login-footer">
-                <p>Dengan masuk, Anda menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a> kami.</p>
+            
+            <div class="auth-footer">
+                <p>Dengan login, Anda menyetujui <a href="#">Syarat & Ketentuan</a> dan <a href="#">Kebijakan Privasi</a> kami.</p>
             </div>
         </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div id="forgotPasswordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 40px; border-radius: 20px; max-width: 400px; width: 90%;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="color: var(--dark);">Reset Password</h2>
-                <button onclick="closeForgotPasswordModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray);">&times;</button>
-            </div>
-            <p style="color: var(--gray); margin-bottom: 20px;">Masukkan email Anda untuk menerima instruksi reset password.</p>
-            <input type="email" id="resetEmail" placeholder="Email Anda" style="width: 100%; padding: 12px 15px; border: 2px solid var(--gray-light); border-radius: 10px; margin-bottom: 20px;">
-            <button onclick="sendResetPassword()" class="btn btn-primary" style="width: 100%;">Kirim Instruksi</button>
-        </div>
-    </div>
-
-    <script>
-        // Password Toggle
-        const passwordToggle = document.getElementById('passwordToggle');
-        const passwordInput = document.getElementById('password');
-        const passwordIcon = passwordToggle.querySelector('i');
-
-        passwordToggle.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            passwordIcon.classList.toggle('fa-eye');
-            passwordIcon.classList.toggle('fa-eye-slash');
-        });
-
-        // Form Validation
-        const loginForm = document.getElementById('loginForm');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const usernameError = document.getElementById('usernameError');
-        const passwordError = document.getElementById('passwordError');
-        const alertDiv = document.getElementById('alert');
-        const submitBtn = document.getElementById('submitBtn');
-        const submitText = document.getElementById('submitText');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-
-        function showError(element, message) {
-            element.textContent = message;
-            element.style.display = 'block';
-            element.parentElement.querySelector('.form-input').classList.add('error');
-            element.parentElement.querySelector('.form-input').classList.add('shake');
-            
-            setTimeout(() => {
-                element.parentElement.querySelector('.form-input').classList.remove('shake');
-            }, 500);
-        }
-
-        function clearError(element) {
-            element.textContent = '';
-            element.style.display = 'none';
-            element.parentElement.querySelector('.form-input').classList.remove('error');
-        }
-
-        function showAlert(message, type = 'error') {
-            alertDiv.textContent = message;
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 5000);
-        }
-
-        // Form Submission
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Clear previous errors
-            clearError(usernameError);
-            clearError(passwordError);
-            alertDiv.style.display = 'none';
-            
-            // Get form values
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            const rememberMe = document.getElementById('rememberMe').checked;
-            
-            // Validation
-            let isValid = true;
-            
-            if (!username) {
-                showError(usernameError, 'Username atau email harus diisi');
-                isValid = false;
-            }
-            
-            if (!password) {
-                showError(passwordError, 'Password harus diisi');
-                isValid = false;
-            } else if (password.length < 6) {
-                showError(passwordError, 'Password minimal 6 karakter');
-                isValid = false;
-            }
-            
-            if (!isValid) return;
-            
-            // Show loading
-            submitBtn.disabled = true;
-            submitText.style.display = 'none';
-            loadingSpinner.style.display = 'block';
-            
-            try {
-                // Send login request
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username,
-                        password,
-                        rememberMe
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Save remember me preference
-                    if (rememberMe) {
-                        localStorage.setItem('rememberMe', 'true');
-                        localStorage.setItem('username', username);
-                    } else {
-                        localStorage.removeItem('rememberMe');
-                        localStorage.removeItem('username');
-                    }
-                    
-                    // Show success message
-                    showAlert('Login berhasil! Mengarahkan ke dashboard...', 'success');
-                    
-                    // Redirect to dashboard
-                    setTimeout(() => {
-                        window.location.href = '/dashboard.html';
-                    }, 1500);
-                    
-                } else {
-                    showAlert(data.message || 'Login gagal. Periksa kredensial Anda.');
-                    
-                    // Shake form on error
-                    loginForm.classList.add('shake');
-                    setTimeout(() => {
-                        loginForm.classList.remove('shake');
-                    }, 500);
-                    
-                    // Clear password field
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                }
-                
-            } catch (error) {
-                showAlert('Terjadi kesalahan jaringan. Silakan coba lagi.');
-                console.error('Login error:', error);
-                
-            } finally {
-                // Hide loading
-                submitBtn.disabled = false;
-                submitText.style.display = 'inline-block';
-                loadingSpinner.style.display = 'none';
-            }
-        });
-
-        // Forgot Password
-        const forgotPasswordBtn = document.getElementById('forgotPassword');
-        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
-        const resetEmailInput = document.getElementById('resetEmail');
-
-        forgotPasswordBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotPasswordModal.style.display = 'flex';
-        });
-
-        function closeForgotPasswordModal() {
-            forgotPasswordModal.style.display = 'none';
-            resetEmailInput.value = '';
-        }
-
-        async function sendResetPassword() {
-            const email = resetEmailInput.value.trim();
-            
-            if (!email || !isValidEmail(email)) {
-                alert('Masukkan email yang valid');
-                return;
-            }
-            
-            try {
-                // Send reset password request
-                const response = await fetch('/api/forgot-password', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert('Instruksi reset password telah dikirim ke email Anda.');
-                    closeForgotPasswordModal();
-                } else {
-                    alert(data.message || 'Gagal mengirim instruksi reset password.');
-                }
-                
-            } catch (error) {
-                alert('Terjadi kesalahan. Silakan coba lagi.');
-                console.error('Reset password error:', error);
-            }
-        }
-
-        function isValidEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        // Social Login
-        async function socialLogin(provider) {
-            showAlert(`Mengarahkan ke login ${provider}...`, 'success');
-            
-            // Simulate social login redirect
-            setTimeout(() => {
-                alert(`Fitur login dengan ${provider} masih dalam pengembangan. Gunakan login biasa untuk sekarang.`);
-            }, 1000);
-        }
-
-        // Language Selector
-        const languageBtn = document.getElementById('languageBtn');
-        let currentLanguage = 'id';
         
-        languageBtn.addEventListener('click', () => {
-            currentLanguage = currentLanguage === 'id' ? 'en' : 'id';
-            languageBtn.querySelector('span').textContent = currentLanguage.toUpperCase();
-            updateLanguage(currentLanguage);
-        });
+        <div class="auth-side">
+            <div class="auth-side-content">
+                <h3>Mengapa Memilih Kami?</h3>
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> Broadcast ke ribuan kontak</li>
+                    <li><i class="fas fa-check-circle"></i> Sistem pairing yang aman</li>
+                    <li><i class="fas fa-check-circle"></i> Analytics real-time</li>
+                    <li><i class="fas fa-check-circle"></i> Support 24/7</li>
+                </ul>
+                
+                <div class="testimonial">
+                    <p>"Sangat membantu untuk campaign marketing kami. Success rate mencapai 98%!"</p>
+                    <div class="author">
+                        <strong>Budi Santoso</strong>
+                        <span>Marketing Manager</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        function updateLanguage(lang) {
-            // Update all text based on language
-            const translations = {
-                id: {
-                    title: 'Masuk ke Akun Anda',
-                    subtitle: 'Masukkan kredensial untuk mengakses dashboard',
-                    usernameLabel: 'Username atau Email',
-                    usernamePlaceholder: 'masukkan username atau email',
-                    passwordLabel: 'Password',
-                    passwordPlaceholder: 'masukkan password',
-                    rememberMe: 'Ingat saya',
-                    forgotPassword: 'Lupa password?',
-                    loginBtn: 'Masuk',
-                    orText: 'atau lanjutkan dengan',
-                    registerBtn: 'Buat Akun Baru',
-                    termsText: 'Dengan masuk, Anda menyetujui ',
-                    termsLink: 'Syarat & Ketentuan',
-                    andText: ' dan ',
-                    privacyLink: 'Kebijakan Privasi',
-                    backHome: 'Kembali ke Beranda'
-                },
-                en: {
-                    title: 'Login to Your Account',
-                    subtitle: 'Enter your credentials to access the dashboard',
-                    usernameLabel: 'Username or Email',
-                    usernamePlaceholder: 'enter username or email',
-                    passwordLabel: 'Password',
-                    passwordPlaceholder: 'enter password',
-                    rememberMe: 'Remember me',
-                    forgotPassword: 'Forgot password?',
-                    loginBtn: 'Login',
-                    orText: 'or continue with',
-                    registerBtn: 'Create New Account',
-                    termsText: 'By logging in, you agree to our ',
-                    termsLink: 'Terms & Conditions',
-                    andText: ' and ',
-                    privacyLink: 'Privacy Policy',
-                    backHome: 'Back to Home'
+    <script src="/js/auth.js"></script>
+    <script>
+        // CSRF Token
+        fetch('/session')
+            .then(res => res.json())
+            .then(data => {
+                if (data.csrfToken) {
+                    document.getElementById('csrfToken').value = data.csrfToken;
                 }
-            };
+            });
+        
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
             
-            const t = translations[lang];
-            
-            // Update elements
-            document.querySelector('.login-header h1').textContent = t.title;
-            document.querySelector('.login-header p').textContent = t.subtitle;
-            document.querySelector('label[for="username"]').textContent = t.usernameLabel;
-            document.getElementById('username').placeholder = t.usernamePlaceholder;
-            document.querySelector('label[for="password"]').textContent = t.passwordLabel;
-            document.getElementById('password').placeholder = t.passwordPlaceholder;
-            document.querySelector('.remember-me span').textContent = t.rememberMe;
-            document.getElementById('forgotPassword').textContent = t.forgotPassword;
-            document.getElementById('submitText').textContent = t.loginBtn;
-            document.querySelector('.divider').textContent = t.orText;
-            document.querySelector('.btn-secondary span').textContent = t.registerBtn;
-            document.querySelector('.login-footer p').innerHTML = `
-                ${t.termsText}<a href="#">${t.termsLink}</a>${t.andText}<a href="#">${t.privacyLink}</a> kami.
-            `;
-            document.querySelector('.back-home a span').textContent = t.backHome;
-        }
-
-        // Check for remembered username
-        window.addEventListener('DOMContentLoaded', () => {
-            const rememberMe = localStorage.getItem('rememberMe');
-            const savedUsername = localStorage.getItem('username');
-            
-            if (rememberMe === 'true' && savedUsername) {
-                usernameInput.value = savedUsername;
-                document.getElementById('rememberMe').checked = true;
-                passwordInput.focus();
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
             } else {
-                usernameInput.focus();
-            }
-            
-            // Check URL for error messages
-            const urlParams = new URLSearchParams(window.location.search);
-            const error = urlParams.get('error');
-            const message = urlParams.get('message');
-            
-            if (error === 'session_expired') {
-                showAlert('Sesi Anda telah berakhir. Silakan login kembali.', 'error');
-            } else if (error === 'unauthorized') {
-                showAlert('Anda harus login untuk mengakses halaman tersebut.', 'error');
-            } else if (error === 'account_locked') {
-                showAlert('Akun Anda dinonaktifkan. Hubungi administrator.', 'error');
-            } else if (message === 'registered') {
-                showAlert('Pendaftaran berhasil! Silakan login dengan akun baru Anda.', 'success');
-            }
-        });
-
-        // Auto-focus next field on Enter
-        usernameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                passwordInput.focus();
-            }
-        });
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                loginForm.dispatchEvent(new Event('submit'));
-            }
-        });
-
-        // Security: Clear password on page hide
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                // Clear password when user switches tabs/apps
-                passwordInput.value = '';
-            }
-        });
-
-        // Security: Clear form on page unload
-        window.addEventListener('beforeunload', () => {
-            if (!document.getElementById('rememberMe').checked) {
-                passwordInput.value = '';
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
             }
         });
     </script>
