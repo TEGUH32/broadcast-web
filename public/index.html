@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Broadcast Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1>WhatsApp Broadcast Bot</h1>
+    
+    <div class="container">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="register()">Register</button>
+    </div>
+    
+    <div class="container" id="dashboard" style="display:none;">
+        <h2>Dashboard</h2>
+        <p>Welcome, <span id="userName"></span></p>
+        <button onclick="getQR()">Get WhatsApp QR Code</button>
+        <div id="qrContainer"></div>
+    </div>
+    
+    <script>
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById('dashboard').style.display = 'block';
+                document.getElementById('userName').textContent = username;
+            } else {
+                alert(data.error || 'Login failed');
+            }
+        }
+        
+        async function register() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            alert(data.message || 'Registration successful');
+        }
+        
+        async function getQR() {
+            const response = await fetch('/api/qr');
+            const data = await response.json();
+            document.getElementById('qrContainer').innerHTML = 
+                `<img src="${data.qr}" alt="QR Code">`;
+        }
+    </script>
+</body>
+</html>
