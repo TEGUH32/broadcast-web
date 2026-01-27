@@ -31,8 +31,8 @@ const PORT = process.env.PORT || 8000;
 const emailConfig = {
     service: process.env.EMAIL_SERVICE || 'gmail',
     auth: {
-        user: process.env.EMAIL_USER || 'your-email@gmail.com',
-        pass: process.env.EMAIL_PASS || 'your-app-password'
+        user: process.env.EMAIL_USER || 'teguhmarwin99@gmail.com',
+        pass: process.env.EMAIL_PASS || 'xqge rise pjpg oeei'
     }
 };
 
