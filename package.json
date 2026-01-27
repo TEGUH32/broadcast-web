@@ -18,7 +18,7 @@
     "express-rate-limit": "^6.7.0",
     "cookie-parser": "^1.4.6",
     "morgan": "^1.10.0",
-   "@adiwajshing/baileys": "npm:@rexxhayanasi/elaina-baileys"
+    "@adiwajshing/baileys": "npm:@rexxhayanasi/elaina-baileys"
     "qrcode": "^1.5.3"
   },
   "devDependencies": {
