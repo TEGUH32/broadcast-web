@@ -4,7 +4,7 @@
   "description": "WhatsApp Broadcast Bot dengan Sistem Pairing Code",
   "main": "server.js",
   "engines": {
-    "node": "18.x"
+    "node": "21.x"
   },
   "scripts": {
     "start": "node server.js",
