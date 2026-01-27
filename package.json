@@ -16,7 +16,8 @@
     "whatsapp-web.js": "^1.23.0",
     "qrcode": "^1.5.3",
     "memorystore": "^1.6.7",
-    "nodemailer": "^6.9.8"
+    "nodemailer": "^6.9.8",
+    "express-rate-limit": "^7.1.5"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
