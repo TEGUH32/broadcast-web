@@ -2,112 +2,129 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const rateLimit = require("express-rate-limit");
 const session = require('express-session');
-const FileStore = require('session-file-store')(session);
-const helmet = require('helmet');
-const csrf = require('csurf');
+const MemoryStore = require('memorystore')(session);
 const bcrypt = require('bcryptjs');
 
-const indexRouter = require('./routes/index');
-const apiRouter = require('./routes/api');
-const { authenticate } = require('./middleware/auth');
-
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-    },
-  },
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: { error: 'Terlalu banyak permintaan, coba lagi nanti' }
-});
-
-app.use(limiter);
-
-// Session configuration
+// Session configuration for Vercel
 app.use(session({
-  store: new FileStore({
-    path: './sessions',
-    ttl: 86400, // 24 jam
-    retries: 3
+  store: new MemoryStore({
+    checkPeriod: 86400000 // Cleanup expired sessions every 24h
   }),
-  secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
+  secret: process.env.SESSION_SECRET || 'your-secret-key-here',
   resave: false,
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000, // 24 jam
-    sameSite: 'strict'
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
 
-// CSRF protection
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
-
-app.set('json spaces', 2);
+// Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public'), {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    }
-  }
-}));
-
-// CSRF token untuk semua views
-app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-});
+// Simple in-memory database for demo
+const users = [];
 
 // Routes
-app.use('/', indexRouter);
-app.use('/api', authenticate, apiRouter);
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Register endpoint
+app.post('/register', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // Check if user exists
+    if (users.find(u => u.username === username)) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+    
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Save user
+    users.push({
+      id: Date.now(),
+      username,
+      password: hashedPassword,
+      createdAt: new Date()
+    });
+    
+    res.json({ success: true, message: 'User registered' });
+  } catch (error) {
+    res.status(500).json({ error: 'Registration failed' });
+  }
+});
+
+// Login endpoint
+app.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    // Find user
+    const user = users.find(u => u.username === username);
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    // Check password
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    // Create session
+    req.session.userId = user.id;
+    req.session.username = user.username;
+    
+    res.json({ success: true, message: 'Login successful' });
+  } catch (error) {
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// QR Code endpoint
+app.get('/api/qr', (req, res) => {
+  // This would generate QR for WhatsApp Web
+  res.json({ 
+    qr: 'data:image/png;base64,placeholder',
+    message: 'WhatsApp Web QR would be generated here'
+  });
+});
+
+// Status endpoint
+app.get('/api/status', (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  
+  res.json({
+    status: 'online',
+    user: req.session.username,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // 404 handler
 app.use('*', (req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Endpoint tidak ditemukan' 
-  });
+  res.status(404).json({ error: 'Not found' });
 });
 
 // Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  
-  if (err.code === 'EBADCSRFTOKEN') {
-    return res.status(403).json({ 
-      success: false, 
-      message: 'Token CSRF tidak valid' 
-    });
-  }
-  
-  res.status(500).json({ 
-    success: false, 
-    message: 'Terjadi kesalahan internal server' 
-  });
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Server berjalan di port ${PORT}`);
-});
+// Export for Vercel
+module.exports = app;
