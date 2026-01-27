@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - WhatsApp Broadcast</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .main-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.3s;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .status-connected {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>WhatsApp Broadcast Bot</h1>
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">U</div>
+                <div>
+                    <h3 id="username">Loading...</h3>
+                    <div class="status-indicator" id="connectionStatus">
+                        <span class="dot"></span> Loading...
+                    </div>
+                </div>
+                <button class="btn logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <a href="dashboard.html" class="nav-item active">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="work.html" class="nav-item">
+                    <span>📤</span> Broadcast
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span>👤</span> Profile
+                </a>
+            </div>
+            
+            <div class="content">
+                <div id="dashboardContent">
+                    <div class="alert alert-info" id="pairingAlert">
+                        <strong>Perhatian!</strong> Anda perlu menyelesaikan pairing WhatsApp untuk menggunakan fitur broadcast.
+                    </div>
+                    
+                    <div class="card">
+                        <h2>WhatsApp Connection</h2>
+                        <div id="whatsappStatus">Loading status...</div>
+                        <div id="qrContainer" style="display: none;">
+                            <h3>Scan QR Code:</h3>
+                            <img id="qrImage" src="" alt="QR Code">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-success" onclick="connectWhatsApp()" id="connectBtn">Connect WhatsApp</button>
+                            <button class="btn btn-secondary" onclick="getQRCode()" id="qrBtn" style="display: none;">Get QR Code</button>
+                            <button class="btn btn-danger" onclick="disconnectWhatsApp()" id="disconnectBtn" style="display: none;">Disconnect</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h2>Broadcast Stats</h2>
+                        <div id="broadcastStats">
+                            <p>Total Broadcast: <strong id="totalBroadcasts">0</strong></p>
+                            <p>Total Sent: <strong id="totalSent">0</strong> messages</p>
+                            <p>Success Rate: <strong id="successRate">0%</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userId = null;
+        let isVerified = false;
+        
+        async function checkSession() {
+            try {
+                const response = await fetch('/session');
+                const data = await response.json();
+                
+                if (data.success && data.isLoggedIn) {
+                    userId = data.data.userId;
+                    isVerified = data.data.isVerified;
+                    document.getElementById('username').textContent = data.data.username;
+                    document.getElementById('userAvatar').textContent = data.data.username.charAt(0).toUpperCase();
+                    
+                    if (isVerified) {
+                        document.getElementById('pairingAlert').style.display = 'none';
+                        loadStats();
+                        checkWhatsAppStatus();
+                    } else {
+                        showPairingModal();
+                    }
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+                window.location.href = '/login.html';
+            }
+        }
+        
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/broadcasts', {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const broadcasts = data.data;
+                    const total = broadcasts.length;
+                    const totalSent = broadcasts.reduce((sum, b) => sum + b.sentCount, 0);
+                    const totalFailed = broadcasts.reduce((sum, b) => sum + b.failedCount, 0);
+                    const successRate = totalSent > 0 ? 
+                        Math.round((totalSent / (totalSent + totalFailed)) * 100) : 0;
+                    
+                    document.getElementById('totalBroadcasts').textContent = total;
+                    document.getElementById('totalSent').textContent = totalSent;
+                    document.getElementById('successRate').textContent = successRate + '%';
+                }
+            } catch (error) {
+                console.error('Stats error:', error);
+            }
+        }
+        
+        async function checkWhatsAppStatus() {
+            try {
+                const response = await fetch('/api/whatsapp/status', {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const statusEl = document.getElementById('connectionStatus');
+                    if (data.data.isConnected) {
+                        statusEl.className = 'status-indicator status-connected';
+                        statusEl.innerHTML = '<span class="dot">●</span> Connected';
+                        document.getElementById('connectBtn').style.display = 'none';
+                        document.getElementById('disconnectBtn').style.display = 'inline-block';
+                    } else {
+                        statusEl.className = 'status-indicator status-disconnected';
+                        statusEl.innerHTML = '<span class="dot">●</span> Disconnected';
+                        document.getElementById('connectBtn').style.display = 'inline-block';
+                        document.getElementById('disconnectBtn').style.display = 'none';
+                    }
+                }
+            } catch (error) {
+                console.error('Status check error:', error);
+            }
+        }
+        
+        async function connectWhatsApp() {
+            try {
+                const response = await fetch('/api/whatsapp/connect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Koneksi WhatsApp sedang dipersiapkan. Klik "Get QR Code" untuk mendapatkan QR Code.');
+                    document.getElementById('qrBtn').style.display = 'inline-block';
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error connecting to WhatsApp');
+            }
+        }
+        
+        async function getQRCode() {
+            try {
+                const response = await fetch('/api/whatsapp/qr');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('qrImage').src = data.data.qrCode;
+                    document.getElementById('qrContainer').style.display = 'block';
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error getting QR code');
+            }
+        }
+        
+        async function disconnectWhatsApp() {
+            if (confirm('Are you sure you want to disconnect WhatsApp?')) {
+                // Implement disconnect logic
+                alert('WhatsApp disconnected');
+                checkWhatsAppStatus();
+            }
+        }
+        
+        function showPairingModal() {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;">
+                    <div style="background:white;padding:40px;border-radius:20px;max-width:500px;width:90%;text-align:center;">
+                        <h2>Pairing Required</h2>
+                        <p>Anda perlu menyelesaikan pairing WhatsApp untuk menggunakan sistem ini.</p>
+                        <div id="pairingCodeContainer"></div>
+                        <div style="margin:20px 0;">
+                            <button class="btn" onclick="generatePairingCode()">Generate Pairing Code</button>
+                        </div>
+                        <p><small>Kode pairing berlaku 10 menit setelah digenerate</small></p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        async function generatePairingCode() {
+            try {
+                const response = await fetch('/api/pairing/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('pairingCodeContainer').innerHTML = `
+                        <h3 style="font-size:48px;letter-spacing:10px;margin:20px 0;">${data.data.code}</h3>
+                        <p>Masukkan kode ini di WhatsApp untuk pairing</p>
+                        <input type="text" id="verifyCode" placeholder="Enter code" style="padding:10px;font-size:18px;text-align:center;">
+                        <button class="btn" onclick="verifyPairing()" style="margin-top:10px;">Verify</button>
+                    `;
+                }
+            } catch (error) {
+                alert('Error generating pairing code');
+            }
+        }
+        
+        async function verifyPairing() {
+            const code = document.getElementById('verifyCode').value;
+            
+            try {
+                const response = await fetch('/api/pairing/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code })
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Pairing successful!');
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error verifying code');
+            }
+        }
+        
+        async function logout() {
+            try {
+                await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                window.location.href = '/login.html';
+            } catch (error) {
+                window.location.href = '/login.html';
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', checkSession);
+        
+        // Auto-check WhatsApp status every 30 seconds
+        setInterval(checkWhatsAppStatus, 30000);
+    </script>
+</body>
+</html>
