@@ -4,7 +4,7 @@ const {
   requirePairing,
   apiKeyAuth,
   rateLimitMiddleware
-} = require('./middlewares/auth');
+} = require('./middlewares/auth.js');
 
 // Route dengan semua fitur
 app.post('/login', 
